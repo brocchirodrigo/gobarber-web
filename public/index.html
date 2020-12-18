@@ -14,12 +14,33 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    </script>
     <script>
       if('geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-          console.log(position)
-        })
-      } else (console.log('Localização não disponível'))
+        const local = navigator.geolocation.getCurrentPosition((position) => {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+            acc: position.coords.accuracy
+          }
+
+          console.log(pos)
+          localStorage.clear()
+
+          localStorage.setItem('@GoBarber:latitude', pos.lat)
+          localStorage.setItem('@GoBarber:longitude', pos.lng)
+          localStorage.setItem('@GoBarber:accuracy', pos.acc)
+        }
+      )} else (console.log('Localização não disponível'))
+
+      $.get('https://www.cloudflare.com/cdn-cgi/trace', (data) => {
+        const dt = data.split("\n")
+
+        localStorage.setItem('@GoBarber:ip', dt[2].substring(dt[2].indexOf("ip=") + 3))
+      }
+    )
     </script>
   </body>
 </html>
