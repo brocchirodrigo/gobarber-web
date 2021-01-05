@@ -33,7 +33,7 @@
           localStorage.setItem('@GoBarber:longitude', pos.lng)
           localStorage.setItem('@GoBarber:accuracy', pos.acc)
         }
-      )} else (console.log('Localização não disponível'))
+      )} else (console.error('Localização não disponível'))
 
       $.get('https://www.cloudflare.com/cdn-cgi/trace', (data) => {
         const dt = data.split("\n")
