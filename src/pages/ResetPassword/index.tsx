@@ -4,7 +4,7 @@ import { FiLogIn, FiLock } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as yup from 'yup';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 import { useToast } from '../../hooks/Toast';
 import getValidateErrors from '../../utils/getValidationErros';
@@ -15,6 +15,7 @@ import Button from '../../components/Button';
 import Input from '../../components/Input';
 
 import { Container, Content, AnimationContainer, Background } from './styles';
+import api from '../../services/api';
 
 interface ResetPasswordFormData {
   password: string;
@@ -26,6 +27,7 @@ const SignIn: React.FC = () => {
 
   const { addToast } = useToast();
   const history = useHistory();
+  const location = useLocation();
 
   const handleSubmit = useCallback(
     async (data: ResetPasswordFormData) => {
@@ -43,6 +45,18 @@ const SignIn: React.FC = () => {
           abortEarly: false,
         });
 
+        const token = location.search.replace('?token=', '');
+
+        if (!token) {
+          throw new Error();
+        }
+
+        await api.post('/password/reset', {
+          password: data.password,
+          password_confirmation: data.password,
+          token,
+        });
+
         history.push('/');
       } catch (err) {
         if (err instanceof yup.ValidationError) {
@@ -58,7 +72,7 @@ const SignIn: React.FC = () => {
         }
       }
     },
-    [addToast, history],
+    [addToast, history, location.search],
   );
 
   return (
