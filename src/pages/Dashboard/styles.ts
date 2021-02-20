@@ -24,7 +24,7 @@ export const HeaderContent = styled.div`
     border: 0;
   }
 
-  scg {
+  svg {
     color: #999591;
     width: 20px;
     height: 20px;
@@ -52,8 +52,16 @@ export const Profile = styled.div`
       color: #f4ede8;
     }
 
-    strong {
-      color: #ff9000;
+    a {
+      text-decoration: none;
+
+      &:hover {
+        opacity: 0.7;
+      }
+
+      strong {
+        color: #ff9000;
+      }
     }
   }
 `;
