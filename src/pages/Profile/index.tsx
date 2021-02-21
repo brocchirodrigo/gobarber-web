@@ -171,6 +171,7 @@ const Profile: React.FC = () => {
             placeholder="Nome"
           />
           <Input
+            containerStyle={{ color: 'blue' }}
             defaultValue={user.email}
             name="email"
             icon={FiMail}
